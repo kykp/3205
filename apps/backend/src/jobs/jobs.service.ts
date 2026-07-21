@@ -45,6 +45,16 @@ export class JobsService {
     };
   }
 
+  cancel(id: string): void {
+    const job = this.repo.findById(id);
+    if (!job) {
+      throw new NotFoundException(`Job ${id} not found`);
+    }
+    if (job.status === 'pending' || job.status === 'in_progress') {
+      job.status = 'cancelled';
+    }
+  }
+
   private toSummary(job: Job): JobSummary {
     let successCount = 0;
     let errorCount = 0;
