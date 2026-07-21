@@ -1,3 +1,4 @@
+import { JobDetail } from './components/JobDetail';
 import { JobForm } from './components/JobForm';
 import { JobList } from './components/JobList';
 import styles from './App.module.css';
@@ -15,7 +16,7 @@ const App = () => (
       </section>
     </aside>
     <main className={styles.detail}>
-      <p className={styles.empty}>Выбери задание слева</p>
+      <JobDetail />
     </main>
   </div>
 );
