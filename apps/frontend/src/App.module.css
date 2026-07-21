@@ -5,22 +5,13 @@
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
   border-right: 1px solid #e2e2e2;
   padding: 20px 18px;
   overflow-y: auto;
   background: #fff;
-}
-
-.sidebar h2 {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #666;
-  margin: 24px 0 10px;
-}
-
-.sidebar h2:first-child {
-  margin-top: 0;
 }
 
 .detail {
@@ -28,7 +19,6 @@
   overflow-y: auto;
 }
 
-.stub,
 .empty {
   color: #999;
   font-style: italic;

@@ -1,19 +1,18 @@
 import { JobDetail } from './components/JobDetail';
 import { JobForm } from './components/JobForm';
 import { JobList } from './components/JobList';
+import { Section } from './components/ui/Section';
 import styles from './App.module.css';
 
 const App = () => (
   <div className={styles.app}>
     <aside className={styles.sidebar}>
-      <section>
-        <h2>Новое задание</h2>
+      <Section title="Новое задание">
         <JobForm />
-      </section>
-      <section>
-        <h2>Задания</h2>
+      </Section>
+      <Section title="Задания">
         <JobList />
-      </section>
+      </Section>
     </aside>
     <main className={styles.detail}>
       <JobDetail />
