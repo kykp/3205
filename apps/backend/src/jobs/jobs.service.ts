@@ -31,7 +31,11 @@ export class JobsService {
   }
 
   list(): JobSummary[] {
-    return this.repo.list().map((job) => this.toSummary(job));
+    return this.repo
+      .list()
+      .slice()
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .map((job) => this.toSummary(job));
   }
 
   findOrThrow(id: string): Job {

@@ -18,7 +18,8 @@ export class UrlCheckService {
       });
       return { httpStatus: response.status };
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'unknown error';
+      const errorMessage =
+        err instanceof Error ? `${err.name}: ${err.message}` : 'unknown error';
       return { errorMessage };
     } finally {
       clearTimeout(timer);
