@@ -1,23 +1,24 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .textarea {
-  padding: 12px 14px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.55;
   resize: vertical;
-  min-height: 120px;
-  background: var(--surface);
+  min-height: 130px;
+  background: rgba(0, 0, 0, 0.28);
   color: var(--text);
   transition:
-    border-color 120ms ease,
-    box-shadow 120ms ease;
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
 }
 
 .textarea::placeholder {
@@ -27,12 +28,14 @@
 .textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-ring);
+  background: rgba(0, 0, 0, 0.34);
+  box-shadow:
+    0 0 0 3px var(--accent-ring),
+    0 0 30px -8px rgba(139, 92, 246, 0.5);
 }
 
 .textarea:disabled {
-  background: var(--muted-bg);
-  color: var(--text-muted);
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -44,21 +47,28 @@
 
 .button {
   flex: 1;
-  padding: 10px 14px;
+  padding: 11px 14px;
   border: 1px solid transparent;
   border-radius: var(--radius);
-  background: var(--text);
+  background: linear-gradient(180deg, #a78bfa, #7c3aed);
   color: #fff;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  box-shadow:
+    0 0 22px -6px rgba(139, 92, 246, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition:
-    background 120ms ease,
-    transform 120ms ease;
+    filter 160ms ease,
+    transform 120ms ease,
+    box-shadow 160ms ease;
 }
 
 .button:not(:disabled):hover {
-  background: #000;
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 30px -4px rgba(139, 92, 246, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .button:not(:disabled):active {
@@ -66,13 +76,14 @@
 }
 
 .button:disabled {
-  background: var(--muted-bg);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-subtle);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .exampleButton {
-  padding: 10px 12px;
+  padding: 11px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
@@ -80,9 +91,9 @@
   cursor: pointer;
   font-size: 12.5px;
   transition:
-    border-color 120ms ease,
-    color 120ms ease,
-    background 120ms ease;
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
 }
 
 .exampleButton:hover:not(:disabled) {

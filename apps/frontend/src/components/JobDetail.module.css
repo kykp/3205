@@ -9,141 +9,66 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
-  max-width: 920px;
+  max-width: 960px;
 }
 
 .header {
   display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+.headerTop {
+  display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--border);
+}
+
+.headerMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-subtle);
+  font-weight: 600;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.01em;
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .titleId {
   font-family: var(--font-mono);
-  font-size: 15px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.progress {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.progressBar {
-  width: 220px;
-  height: 6px;
-  background: var(--muted-bg);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progressFill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
-  transition: width 260ms ease;
-}
-
-.counter {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.cancelButton {
-  padding: 9px 14px;
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  color: var(--error-fg);
-  border-radius: var(--radius);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-  transition:
-    border-color 120ms ease,
-    background 120ms ease;
-}
-
-.cancelButton:hover:not(:disabled) {
-  border-color: var(--error-fg);
-  background: #fdf5f6;
-}
-
-.cancelButton:disabled {
-  color: var(--text-subtle);
-  border-color: var(--border);
-  cursor: not-allowed;
-}
-
-.urls {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.url {
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  transition: border-color 120ms ease;
-}
-
-.url:hover {
-  border-color: var(--border-strong);
-}
-
-.urlTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 6px;
-}
-
-.urlText {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  word-break: break-all;
-  color: var(--text);
-}
-
-.urlMeta {
-  display: flex;
-  gap: 14px;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.errorMsg {
-  color: var(--error-fg);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, #f3f4f8 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .badge {
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -156,19 +81,184 @@
 .badgeInProgress {
   background: var(--warning-bg);
   color: var(--warning-fg);
+  box-shadow: 0 0 16px -2px rgba(252, 211, 77, 0.25);
 }
 
-.badgeSuccess {
+.badgeCompleted {
   background: var(--success-bg);
   color: var(--success-fg);
 }
 
-.badgeError {
+.badgeCancelled {
   background: var(--error-bg);
   color: var(--error-fg);
 }
 
-.badgeCancelled {
-  background: var(--muted-bg);
+.cancelButton {
+  padding: 9px 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  color: var(--error-fg);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(248, 113, 113, 0.14);
+}
+
+.cancelButton:disabled {
   color: var(--text-subtle);
+  border-color: var(--border);
+  background: var(--surface);
+  cursor: not-allowed;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressBar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #22d3ee, #8b5cf6);
+  background-size: 200% 100%;
+  border-radius: 999px;
+  animation: shimmer 3s linear infinite;
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.55);
+  transition: width 320ms ease;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.percent {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.urls {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.url {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 13px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.url:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--muted-fg);
+}
+
+.dotPending {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dotInProgress {
+  background: #fcd34d;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(252, 211, 77, 0.55),
+      0 0 8px rgba(252, 211, 77, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(252, 211, 77, 0),
+      0 0 14px rgba(252, 211, 77, 0.6);
+  }
+}
+
+.dotSuccess {
+  background: #6ee7b7;
+  box-shadow: 0 0 10px rgba(110, 231, 183, 0.45);
+}
+
+.dotError {
+  background: #f87171;
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.45);
+}
+
+.dotCancelled {
+  background: var(--text-subtle);
+}
+
+.urlText {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.urlMeta {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.httpStatus {
+  color: var(--text);
+}
+
+.errorMsg {
+  color: var(--error-fg);
 }

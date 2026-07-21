@@ -31,28 +31,37 @@ export const JobList = () => {
 
   return (
     <ul className={styles.list}>
-      {list.map((job) => (
-        <li key={job.id}>
-          <button
-            type="button"
-            className={`${styles.item} ${activeId === job.id ? styles.active : ''}`}
-            onClick={() => jobsActions.setActive(job.id)}
-          >
-            <div className={styles.itemTop}>
-              <span className={styles.id}>{job.id.slice(0, 8)}</span>
-              <span className={`${styles.badge} ${badgeClass[job.status]}`}>
-                {statusLabels[job.status]}
-              </span>
-            </div>
-            <div className={styles.itemBottom}>
-              <span>
-                {job.successCount}/{job.total} успех
-              </span>
-              <span>{job.errorCount} ошибок</span>
-            </div>
-          </button>
-        </li>
-      ))}
+      {list.map((job) => {
+        const done = job.successCount + job.errorCount;
+        const percent = job.total === 0 ? 0 : (done / job.total) * 100;
+        return (
+          <li key={job.id}>
+            <button
+              type="button"
+              className={`${styles.item} ${activeId === job.id ? styles.active : ''}`}
+              onClick={() => jobsActions.setActive(job.id)}
+            >
+              <div className={styles.itemTop}>
+                <span className={styles.id}>{job.id.slice(0, 8)}</span>
+                <span className={`${styles.badge} ${badgeClass[job.status]}`}>
+                  {statusLabels[job.status]}
+                </span>
+              </div>
+              <div className={styles.progressBar}>
+                <div className={styles.progressFill} style={{ width: `${percent}%` }} />
+              </div>
+              <div className={styles.itemBottom}>
+                <span>
+                  {done} / {job.total}
+                </span>
+                {job.errorCount > 0 && (
+                  <span className={styles.errCount}>{job.errorCount} ошибок</span>
+                )}
+              </div>
+            </button>
+          </li>
+        );
+      })}
     </ul>
   );
 };
