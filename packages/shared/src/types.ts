@@ -2,8 +2,7 @@ export type JobStatus =
   | 'pending'
   | 'in_progress'
   | 'completed'
-  | 'cancelled'
-  | 'failed';
+  | 'cancelled';
 
 export type UrlStatus =
   | 'pending'
