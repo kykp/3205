@@ -1,26 +1,21 @@
 .app {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 360px 1fr;
   height: 100vh;
+  background: var(--bg);
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  border-right: 1px solid #e2e2e2;
-  padding: 20px 18px;
+  gap: 32px;
+  border-right: 1px solid var(--border);
+  padding: 28px 22px;
   overflow-y: auto;
-  background: #fff;
+  background: var(--surface);
 }
 
 .detail {
-  padding: 28px 32px;
+  padding: 40px 48px;
   overflow-y: auto;
-}
-
-.empty {
-  color: #999;
-  font-style: italic;
-  font-size: 14px;
 }

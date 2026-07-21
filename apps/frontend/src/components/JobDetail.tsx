@@ -24,6 +24,20 @@ const urlBadgeClass: Record<UrlStatus, string> = {
   cancelled: styles.badgeCancelled,
 };
 
+const jobStatusLabel: Record<JobStatus, string> = {
+  pending: 'в очереди',
+  in_progress: 'в работе',
+  completed: 'готово',
+  cancelled: 'отменено',
+};
+
+const jobBadgeClass: Record<JobStatus, string> = {
+  pending: styles.badgePending,
+  in_progress: styles.badgeInProgress,
+  completed: styles.badgeSuccess,
+  cancelled: styles.badgeError,
+};
+
 const TERMINAL_URL_STATUSES: UrlStatus[] = ['success', 'error', 'cancelled'];
 const CANCELLABLE_JOB_STATUSES: JobStatus[] = ['pending', 'in_progress'];
 
@@ -43,15 +57,28 @@ export const JobDetail = () => {
   }
 
   const done = detail.urls.filter((u) => TERMINAL_URL_STATUSES.includes(u.status)).length;
+  const total = detail.urls.length;
+  const percent = total === 0 ? 0 : (done / total) * 100;
   const canCancel = CANCELLABLE_JOB_STATUSES.includes(detail.status);
 
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <div>
-          <div className={styles.title}>Задание {detail.id.slice(0, 8)}</div>
+          <div className={styles.title}>
+            Задание
+            <span className={styles.titleId}>{detail.id.slice(0, 8)}</span>
+            <span className={`${styles.badge} ${jobBadgeClass[detail.status]}`}>
+              {jobStatusLabel[detail.status]}
+            </span>
+          </div>
           <div className={styles.progress}>
-            Статус: <b>{detail.status}</b> · {done} из {detail.urls.length} обработано
+            <div className={styles.progressBar}>
+              <div className={styles.progressFill} style={{ width: `${percent}%` }} />
+            </div>
+            <span className={styles.counter}>
+              {done} / {total}
+            </span>
           </div>
         </div>
         {canCancel && (

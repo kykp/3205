@@ -1,14 +1,14 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .title {
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #666;
+  letter-spacing: 0.08em;
+  color: var(--text-subtle);
   margin: 0;
   font-weight: 600;
 }
