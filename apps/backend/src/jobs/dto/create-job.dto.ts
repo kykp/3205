@@ -1,8 +1,12 @@
-import { ArrayNotEmpty, IsArray, IsUrl } from 'class-validator';
+import { ArrayMaxSize, ArrayNotEmpty, IsArray, IsUrl } from 'class-validator';
 
 export class CreateJobDto {
   @IsArray()
   @ArrayNotEmpty()
-  @IsUrl({}, { each: true })
+  @ArrayMaxSize(1000)
+  @IsUrl(
+    { require_protocol: true, protocols: ['http', 'https'] },
+    { each: true },
+  )
   urls!: string[];
 }
