@@ -19,7 +19,14 @@
   border-color: #4a90e2;
 }
 
+.actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 .button {
+  flex: 1;
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
@@ -28,6 +35,26 @@
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+}
+
+.exampleButton {
+  padding: 8px 10px;
+  background: white;
+  border: 1px solid #d0d0d0;
+  color: #555;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.exampleButton:hover:not(:disabled) {
+  border-color: #4a90e2;
+  color: #4a90e2;
+}
+
+.exampleButton:disabled {
+  color: #999;
+  cursor: not-allowed;
 }
 
 .button:disabled {
