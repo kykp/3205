@@ -1,6 +1,6 @@
 import type { UrlStatus } from '@3205/shared';
 import { usePollingJob } from '../hooks/usePollingJob';
-import { useJobsStore } from '../store/jobs.store';
+import { jobsActions, useActiveJobDetail, useActiveJobId } from '../store/jobs.store';
 import styles from './JobDetail.module.css';
 
 const urlStatusLabel: Record<UrlStatus, string> = {
@@ -20,9 +20,8 @@ const urlBadgeClass: Record<UrlStatus, string> = {
 };
 
 export const JobDetail = () => {
-  const activeId = useJobsStore((s) => s.activeId);
-  const detail = useJobsStore((s) => s.activeDetail);
-  const cancelActive = useJobsStore((s) => s.cancelActive);
+  const activeId = useActiveJobId();
+  const detail = useActiveJobDetail();
 
   usePollingJob(activeId);
 
@@ -53,7 +52,7 @@ export const JobDetail = () => {
           <button
             type="button"
             className={styles.cancelButton}
-            onClick={() => void cancelActive()}
+            onClick={() => void jobsActions.cancelActive()}
           >
             Отменить задание
           </button>

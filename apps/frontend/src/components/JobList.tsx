@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { JobStatus } from '@3205/shared';
-import { useJobsStore } from '../store/jobs.store';
+import { jobsActions, useActiveJobId, useJobsList } from '../store/jobs.store';
 import styles from './JobList.module.css';
 
 const statusLabels: Record<JobStatus, string> = {
@@ -18,14 +18,12 @@ const badgeClass: Record<JobStatus, string> = {
 };
 
 export const JobList = () => {
-  const list = useJobsStore((s) => s.list);
-  const activeId = useJobsStore((s) => s.activeId);
-  const refreshList = useJobsStore((s) => s.refreshList);
-  const setActive = useJobsStore((s) => s.setActive);
+  const list = useJobsList();
+  const activeId = useActiveJobId();
 
   useEffect(() => {
-    void refreshList();
-  }, [refreshList]);
+    void jobsActions.refreshList();
+  }, []);
 
   if (list.length === 0) {
     return <p className={styles.empty}>Пока пусто</p>;
@@ -38,7 +36,7 @@ export const JobList = () => {
           <button
             type="button"
             className={`${styles.item} ${activeId === job.id ? styles.active : ''}`}
-            onClick={() => setActive(job.id)}
+            onClick={() => jobsActions.setActive(job.id)}
           >
             <div className={styles.itemTop}>
               <span className={styles.id}>{job.id.slice(0, 8)}</span>

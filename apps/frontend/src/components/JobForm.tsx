@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { parseUrls } from '../lib/parseUrls';
-import { useJobsStore } from '../store/jobs.store';
+import { jobsActions, useJobsError, useJobsSubmitting } from '../store/jobs.store';
 import styles from './JobForm.module.css';
 
 const EXAMPLE_URLS = [
@@ -13,19 +13,16 @@ const EXAMPLE_URLS = [
 
 export const JobForm = () => {
   const [text, setText] = useState('');
-  const submitting = useJobsStore((s) => s.submitting);
-  const error = useJobsStore((s) => s.error);
-  const createJob = useJobsStore((s) => s.createJob);
+  const submitting = useJobsSubmitting();
+  const error = useJobsError();
 
   const fillExample = () => setText(EXAMPLE_URLS.join('\n'));
 
   const submit = async () => {
     const urls = parseUrls(text);
     if (urls.length === 0) return;
-    await createJob(urls);
-    if (!useJobsStore.getState().error) {
-      setText('');
-    }
+    const ok = await jobsActions.createJob(urls);
+    if (ok) setText('');
   };
 
   return (

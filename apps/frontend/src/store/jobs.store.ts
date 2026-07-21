@@ -12,17 +12,16 @@ type State = {
 
 type Actions = {
   refreshList: () => Promise<void>;
-  createJob: (urls: string[]) => Promise<void>;
+  createJob: (urls: string[]) => Promise<boolean>;
   setActive: (id: string | null) => void;
   setActiveDetail: (job: Job) => void;
   cancelActive: () => Promise<void>;
-  clearError: () => void;
 };
 
 const errorMessage = (e: unknown): string =>
   e instanceof Error ? e.message : 'unknown error';
 
-export const useJobsStore = create<State & Actions>((set, get) => ({
+const useJobsStore = create<State & Actions>((set, get) => ({
   list: [],
   activeId: null,
   activeDetail: null,
@@ -44,8 +43,10 @@ export const useJobsStore = create<State & Actions>((set, get) => ({
       const { jobId } = await api.createJob(urls);
       set({ activeId: jobId, activeDetail: null, submitting: false });
       await get().refreshList();
+      return true;
     } catch (e) {
       set({ error: errorMessage(e), submitting: false });
+      return false;
     }
   },
 
@@ -69,6 +70,18 @@ export const useJobsStore = create<State & Actions>((set, get) => ({
       set({ error: errorMessage(e) });
     }
   },
-
-  clearError: () => set({ error: null }),
 }));
+
+export const useJobsList = () => useJobsStore((s) => s.list);
+export const useActiveJobId = () => useJobsStore((s) => s.activeId);
+export const useActiveJobDetail = () => useJobsStore((s) => s.activeDetail);
+export const useJobsSubmitting = () => useJobsStore((s) => s.submitting);
+export const useJobsError = () => useJobsStore((s) => s.error);
+
+export const jobsActions = {
+  refreshList: () => useJobsStore.getState().refreshList(),
+  createJob: (urls: string[]) => useJobsStore.getState().createJob(urls),
+  setActive: (id: string | null) => useJobsStore.getState().setActive(id),
+  setActiveDetail: (job: Job) => useJobsStore.getState().setActiveDetail(job),
+  cancelActive: () => useJobsStore.getState().cancelActive(),
+};
