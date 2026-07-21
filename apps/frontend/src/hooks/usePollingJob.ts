@@ -1,39 +1,45 @@
 import { useEffect } from 'react';
-import type { JobStatus } from '@3205/shared';
 import { getJob } from '../api/jobs';
 import { jobsActions } from '../store/jobs.store';
 
 const POLL_INTERVAL_MS = 1500;
-const TERMINAL: readonly JobStatus[] = ['completed', 'cancelled'];
+const MAX_BACKOFF_MS = 15000;
+const REFRESH_LIST_EVERY = 2;
 
 export const usePollingJob = (id: string | null) => {
   useEffect(() => {
     if (!id) return;
 
     const controller = new AbortController();
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let stopped = false;
+    let cancelled = false;
+    let timer: number | null | undefined = null;
+    let tickCount = 0;
+    let errorStreak = 0;
 
     const tick = async () => {
       try {
         const job = await getJob(id, controller.signal);
-        if (stopped) return;
+        if (cancelled) return;
+        errorStreak = 0;
         jobsActions.setActiveDetail(job);
-        if (TERMINAL.includes(job.status)) {
+        if (job.status === 'completed' || job.status === 'cancelled') {
           void jobsActions.refreshList();
           return;
         }
+        tickCount++;
+        if (tickCount % REFRESH_LIST_EVERY === 0) void jobsActions.refreshList();
         timer = setTimeout(tick, POLL_INTERVAL_MS);
       } catch {
-        if (controller.signal.aborted || stopped) return;
-        timer = setTimeout(tick, POLL_INTERVAL_MS);
+        if (cancelled) return;
+        errorStreak++;
+        const delay = Math.min(POLL_INTERVAL_MS * 2 ** (errorStreak - 1), MAX_BACKOFF_MS);
+        timer = setTimeout(tick, delay);
       }
     };
-
     void tick();
 
     return () => {
-      stopped = true;
+      cancelled = true;
       controller.abort();
       if (timer) clearTimeout(timer);
     };

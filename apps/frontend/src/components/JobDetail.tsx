@@ -1,6 +1,11 @@
-import type { UrlStatus } from '@3205/shared';
+import type { JobStatus, UrlStatus } from '@3205/shared';
 import { usePollingJob } from '../hooks/usePollingJob';
-import { jobsActions, useActiveJobDetail, useActiveJobId } from '../store/jobs.store';
+import {
+  jobsActions,
+  useActiveJobDetail,
+  useActiveJobId,
+  useJobsCancelling,
+} from '../store/jobs.store';
 import styles from './JobDetail.module.css';
 
 const urlStatusLabel: Record<UrlStatus, string> = {
@@ -19,9 +24,13 @@ const urlBadgeClass: Record<UrlStatus, string> = {
   cancelled: styles.badgeCancelled,
 };
 
+const TERMINAL_URL_STATUSES: UrlStatus[] = ['success', 'error', 'cancelled'];
+const CANCELLABLE_JOB_STATUSES: JobStatus[] = ['pending', 'in_progress'];
+
 export const JobDetail = () => {
   const activeId = useActiveJobId();
   const detail = useActiveJobDetail();
+  const cancelling = useJobsCancelling();
 
   usePollingJob(activeId);
 
@@ -33,11 +42,8 @@ export const JobDetail = () => {
     return <p className={styles.empty}>Загрузка…</p>;
   }
 
-  const done = detail.urls.filter(
-    (u) => u.status === 'success' || u.status === 'error' || u.status === 'cancelled',
-  ).length;
-
-  const canCancel = detail.status === 'pending' || detail.status === 'in_progress';
+  const done = detail.urls.filter((u) => TERMINAL_URL_STATUSES.includes(u.status)).length;
+  const canCancel = CANCELLABLE_JOB_STATUSES.includes(detail.status);
 
   return (
     <div className={styles.wrapper}>
@@ -53,8 +59,9 @@ export const JobDetail = () => {
             type="button"
             className={styles.cancelButton}
             onClick={() => void jobsActions.cancelActive()}
+            disabled={cancelling}
           >
-            Отменить задание
+            {cancelling ? 'Отмена…' : 'Отменить задание'}
           </button>
         )}
       </header>

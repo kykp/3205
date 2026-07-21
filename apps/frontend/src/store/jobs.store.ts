@@ -7,6 +7,7 @@ type State = {
   activeId: string | null;
   activeDetail: Job | null;
   submitting: boolean;
+  cancelling: boolean;
   error: string | null;
 };
 
@@ -21,18 +22,24 @@ type Actions = {
 const errorMessage = (e: unknown): string =>
   e instanceof Error ? e.message : 'unknown error';
 
+let refreshEpoch = 0;
+
 const useJobsStore = create<State & Actions>((set, get) => ({
   list: [],
   activeId: null,
   activeDetail: null,
   submitting: false,
+  cancelling: false,
   error: null,
 
   refreshList: async () => {
+    const epoch = ++refreshEpoch;
     try {
       const list = await api.listJobs();
-      set({ list });
+      if (epoch !== refreshEpoch) return;
+      set({ list, error: null });
     } catch (e) {
+      if (epoch !== refreshEpoch) return;
       set({ error: errorMessage(e) });
     }
   },
@@ -62,12 +69,14 @@ const useJobsStore = create<State & Actions>((set, get) => ({
 
   cancelActive: async () => {
     const id = get().activeId;
-    if (!id) return;
+    if (!id || get().cancelling) return;
+    set({ cancelling: true, error: null });
     try {
       await api.cancelJob(id);
+      set({ cancelling: false });
       await get().refreshList();
     } catch (e) {
-      set({ error: errorMessage(e) });
+      set({ error: errorMessage(e), cancelling: false });
     }
   },
 }));
@@ -76,6 +85,7 @@ export const useJobsList = () => useJobsStore((s) => s.list);
 export const useActiveJobId = () => useJobsStore((s) => s.activeId);
 export const useActiveJobDetail = () => useJobsStore((s) => s.activeDetail);
 export const useJobsSubmitting = () => useJobsStore((s) => s.submitting);
+export const useJobsCancelling = () => useJobsStore((s) => s.cancelling);
 export const useJobsError = () => useJobsStore((s) => s.error);
 
 export const jobsActions = {

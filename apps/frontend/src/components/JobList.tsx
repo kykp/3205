@@ -48,7 +48,7 @@ export const JobList = () => {
               <span>
                 {job.successCount}/{job.total} успех
               </span>
-              {job.errorCount > 0 && <span>{job.errorCount} ошибок</span>}
+              <span>{job.errorCount} ошибок</span>
             </div>
           </button>
         </li>
