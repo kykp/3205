@@ -1,11 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import type { CreateJobResponse, Job, JobSummary, UrlResult } from '@3205/shared';
+import { JobWorker } from './job.worker';
 import { JobsRepository } from './jobs.repository';
 
 @Injectable()
 export class JobsService {
-  constructor(private readonly repo: JobsRepository) {}
+  constructor(
+    private readonly repo: JobsRepository,
+    private readonly worker: JobWorker,
+  ) {}
 
   create(urls: string[]): CreateJobResponse {
     const urlResults: UrlResult[] = urls.map((url) => ({
@@ -21,6 +25,7 @@ export class JobsService {
     };
 
     this.repo.save(job);
+    void this.worker.processJob(job.id);
 
     return { jobId: job.id };
   }
